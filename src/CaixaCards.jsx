@@ -5,7 +5,7 @@ export default function CaixaCards(props){
     const cards = props.cards;
     return(
         <ConteinerCards>
-            {cards.map((card,index)=><Card card={card} index={index}/>)}
+            {cards.map((card,index)=><Card key={index} card={card} index={index}/>)}
         </ConteinerCards>
     );
 }
