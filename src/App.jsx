@@ -4,11 +4,11 @@ import GlobalStyle from './globalStyles'
 import TelaJogo from './TelaJogo'
 
 export default function App() {
-  
+  const [respondidos, setRespondidos] = useState(0);
   return (
     <>
       <GlobalStyle/>
-      <TelaJogo cards={cards}/>
+      <TelaJogo respondidos={respondidos} setRespondidos={setRespondidos} cards={cards}/>
     </>
   )
 }

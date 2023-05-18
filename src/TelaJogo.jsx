@@ -10,8 +10,8 @@ export default function TelaJogo(props) {
                 <img src={logo} alt="logo" />
                 <p>ZapRecall</p>
             </Header>
-            <CaixaCards cards={props.cards}/>
-            <RodaPe />
+            <CaixaCards setRespondidos={props.setRespondidos} respondidos={props.respondidos} cards={props.cards}/>
+            <RodaPe cards={props.cards} respondidos={props.respondidos}/>
         </Tela>
     );
 }

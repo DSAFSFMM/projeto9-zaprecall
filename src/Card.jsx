@@ -1,11 +1,17 @@
 import styled from "styled-components";
-import setaPlay from "./assets/seta_play.png"
-import setaVirar from "./assets/seta_virar.png"
+import setaPlay from "./assets/seta_play.png";
+import setaVirar from "./assets/seta_virar.png";
 import { useState } from "react";
+import iconeCerto from "./assets/icone_certo.png";
+import iconeErro from "./assets/icone_erro.png";
+import iconeQuase from "./assets/icone_quase.png";
 
 export default function Card(props){
     const [play, setPlay] = useState(false);
     const [resposta, setResposta] = useState(false);
+    const [respondido, setRespondido] = useState(false);
+    const [acerto, setAcerto] = useState(iconeCerto);
+    const [cor, setCor] = useState();
     return(
         <>
             <Pergunta play={play}> 
@@ -16,14 +22,18 @@ export default function Card(props){
                 <p>{props.card.question}</p>
                 <img src={setaVirar} alt="setaPlay" onClick={() => setResposta(true)}/>
             </Enunciado>
-            <Resposta resposta={resposta}>
+            <Resposta resposta={resposta} respondido={respondido}>
                 <p>{props.card.answer}</p>
                 <div>
-                    <Botao color="#FF3030">Não Lembrei</Botao>
-                    <Botao color="#FF922E">Quase não lembrei</Botao>
-                    <Botao color="#2FBE34">Zap!</Botao>
+                    <Botao color="#FF3030" onClick={()=> {setRespondido(true); setAcerto(iconeErro); setCor("#FF3030"); props.setRespondidos(props.respondidos + 1)}}>Não Lembrei</Botao>
+                    <Botao color="#FF922E" onClick={()=> {setRespondido(true); setAcerto(iconeQuase); setCor("#FF922E"); props.setRespondidos(props.respondidos + 1)}}>Quase não lembrei</Botao>
+                    <Botao color="#2FBE34" onClick={()=> {setRespondido(true); setAcerto(iconeCerto); setCor("#2FBE34"); props.setRespondidos(props.respondidos + 1)}}>Zap!</Botao>
                 </div>
             </Resposta>
+            <Final respondido={respondido} cor={cor}>
+                <p>Pergunta {props.index + 1}</p>
+                <img src={acerto} alt="setaPlay"/>
+            </Final>
         </>
     );
 }
@@ -32,7 +42,7 @@ const Pergunta = styled.div`
     background-color: white;
     min-height: 65px;
     width: 300px;
-    display: ${(props)=> props.play ? "none" : "flex"};
+    display: ${(props)=> props.play? "none" : "flex"};
     justify-content: space-between;
     align-items: center;
     box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
@@ -82,7 +92,7 @@ const Resposta = styled.div`
     background-color: #FFFFD4;
     min-height: 130px;
     width: 300px;
-    display: ${(props)=> !props.resposta ? "none" : "flex"};
+    display: ${(props)=> !props.resposta || props.respondido? "none" : "flex"};
     flex-direction: column;
     box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
@@ -113,4 +123,28 @@ const Botao = styled.button`
     font-size: 12px;
     line-height: 14px;
     color: #FFFFFF;
+`;
+
+const Final = styled.div`
+    background-color: white;
+    min-height: 65px;
+    width: 300px;
+    display: ${(props)=> !props.respondido? "none" : "flex"};
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    padding: 0 15px 0 15px;
+    p{
+        text-decoration: line-through;
+        font-family: 'Recursive';
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 19px;
+        color: ${(props)=> props.cor};
+    }
+    img{
+        width: 23px;
+        height: 23px;
+    }
 `;
