@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export default function RodaPe(props){
     return(
-        <Footer>
+        <Footer data-test="footer">
             <p>{props.respondidos}/{props.cards.length} CONCLUÍDOS</p>
         </Footer>
     );

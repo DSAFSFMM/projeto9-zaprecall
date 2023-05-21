@@ -12,29 +12,30 @@ export default function Card(props){
     const [respondido, setRespondido] = useState(false);
     const [acerto, setAcerto] = useState(iconeCerto);
     const [cor, setCor] = useState();
+    const [dataTest, setDataTest] = useState();
     return(
-        <>
+        <div data-test="flashcard">
             <Pergunta play={play}> 
-                <p>Pergunta {props.index + 1}</p>
+                <p data-test="flashcard-text">Pergunta {props.index + 1}</p>
                 <img src={setaPlay} alt="setaPlay" onClick={() => setPlay(true)}/>
             </Pergunta>
             <Enunciado play={play} resposta={resposta}>
-                <p>{props.card.question}</p>
+                <p data-test="flashcard-text">{props.card.question}</p>
                 <img src={setaVirar} alt="setaPlay" onClick={() => setResposta(true)}/>
             </Enunciado>
             <Resposta resposta={resposta} respondido={respondido}>
-                <p>{props.card.answer}</p>
+                <p data-test="flashcard-text">{props.card.answer}</p>
                 <div>
-                    <Botao color="#FF3030" onClick={()=> {setRespondido(true); setAcerto(iconeErro); setCor("#FF3030"); props.setRespondidos(props.respondidos + 1)}}>Não Lembrei</Botao>
-                    <Botao color="#FF922E" onClick={()=> {setRespondido(true); setAcerto(iconeQuase); setCor("#FF922E"); props.setRespondidos(props.respondidos + 1)}}>Quase não lembrei</Botao>
-                    <Botao color="#2FBE34" onClick={()=> {setRespondido(true); setAcerto(iconeCerto); setCor("#2FBE34"); props.setRespondidos(props.respondidos + 1)}}>Zap!</Botao>
+                    <Botao data-test="no-btn" color="#FF3030" onClick={()=> {setRespondido(true); setAcerto(iconeErro); setCor("#FF3030"); props.setRespondidos(props.respondidos + 1); setDataTest("no-icon" )}}>Não Lembrei</Botao>
+                    <Botao data-test="partial-btn" color="#FF922E" onClick={()=> {setRespondido(true); setAcerto(iconeQuase); setCor("#FF922E"); props.setRespondidos(props.respondidos + 1); setDataTest("zap-icon" )}}>Quase não lembrei</Botao>
+                    <Botao data-test="zap-btn" color="#2FBE34" onClick={()=> {setRespondido(true); setAcerto(iconeCerto); setCor("#2FBE34"); props.setRespondidos(props.respondidos + 1); setDataTest("partial-icon" )}}>Zap!</Botao>
                 </div>
             </Resposta>
             <Final respondido={respondido} cor={cor}>
-                <p>Pergunta {props.index + 1}</p>
-                <img src={acerto} alt="setaPlay"/>
+                <p data-test="flashcard-text">Pergunta {props.index + 1}</p>
+                <img data-test={dataTest} src={acerto} alt="setaPlay"/>
             </Final>
-        </>
+        </div>
     );
 }
 
