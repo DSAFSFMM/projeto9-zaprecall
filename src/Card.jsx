@@ -40,30 +40,44 @@ export default function Card(props){
     }
 
     return(
-    <Conteudo play={play} resposta={resposta} respondido={respondido} cor={cor}>
-        <Texto play={play} resposta={resposta} index={props.index + 1} question={props.card.question} answer={props.card.answer} respondido={respondido}/>
-        <Imagem play={play} setPlay={setPlay} setResposta={setResposta} respondido={respondido} acerto={acerto}/>
-        <div>
-            <Botao data-test="no-btn" color="#FF3030" onClick={()=> responder(-1)}>Não Lembrei</Botao>
-            <Botao data-test="partial-btn" color="#FF922E" onClick={()=> responder(0)}>Quase não lembrei</Botao>
-            <Botao data-test="zap-btn" color="#2FBE34" onClick={()=> responder(1)}>Zap!</Botao>
-        </div>
+        <Conteudo data-test="flashcard" play={play} resposta={resposta} respondido={respondido} cor={cor}>
+            <Texto play={play} resposta={resposta} index={props.index + 1} question={props.card.question} answer={props.card.answer} respondido={respondido}/>
+            <Imagem play={play} setPlay={setPlay} setResposta={setResposta} respondido={respondido} acerto={acerto}/>
+            <div>
+                <Botao data-test="no-btn" color="#FF3030" onClick={()=> responder(-1)}>Não Lembrei</Botao>
+                <Botao data-test="partial-btn" color="#FF922E" onClick={()=> responder(0)}>Quase não lembrei</Botao>
+                <Botao data-test="zap-btn" color="#2FBE34" onClick={()=> responder(1)}>Zap!</Botao>
+            </div>
        </Conteudo>
     )
 }
 
 function Imagem(props){
+
+    function dataTest(){
+        switch (props.acerto) {
+            case iconeCerto:
+                return "zap-icon";
+            case iconeQuase:
+                return "partial-icon";
+            case iconeErro:
+                return "no-icon";
+            default:
+                break;
+        }
+    }
+
     if (!props.play) {
         return (
-            <img src={setaPlay} alt="setaPlay" onClick={() => props.setPlay(true)}/>
+            <img data-test="play-btn" src={setaPlay} alt="setaPlay" onClick={() => props.setPlay(true)}/>
         );
     }else if(!props.respondido){
         return (
-            <img src={setaVirar} alt="setaVirar" onClick={() => props.setResposta(true)}/>
+            <img data-test="turn-btn" src={setaVirar} alt="setaVirar" onClick={() => props.setResposta(true)}/>
         );
     }else{
         return(
-            <img src={props.acerto} alt="setaPlay"/>
+            <img data-test={`${dataTest()}`} src={props.acerto} alt="iconeDeAcerto"/>
         );
     }
 }

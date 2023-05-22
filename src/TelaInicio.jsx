@@ -6,7 +6,7 @@ export default function TelaInicio(props){
         <Tela inicio={props.inicio}>
             <img src={img} alt="icone"/>
             <p>ZapRecall</p>
-            <button onClick={()=>props.setInicio(true)}>Iniciar Recall!</button>
+            <button data-test="start-btn"  onClick={()=>props.setInicio(true)}>Iniciar Recall!</button>
         </Tela>
     );
 }

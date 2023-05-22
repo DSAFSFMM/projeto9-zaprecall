@@ -9,18 +9,18 @@ export default function RodaPe(props){
     function renderizaLista(item, index){
         switch (item) {
             case 1:
-                return(<img key={index} src={iconeCerto} alt="iconeCerto" />);
+                return(<img data-test="zap-icon" key={index} src={iconeCerto} alt="iconeCerto" />);
             case 0:
-                return(<img key={index} src={iconeQuase} alt="iconeQuase" />);
+                return(<img data-test="partial-icon" key={index} src={iconeQuase} alt="iconeQuase" />);
             case -1:
-                return(<img key={index} src={iconeErrado} alt="iconeErrado" />);
+                return(<img data-test="no-icon" key={index} src={iconeErrado} alt="iconeErrado" />);
             default:
                 break;
         }
     }
     return(
         <Footer data-test="footer" fim={props.fim}>
-            <MsgFim fim={props.fim}>
+            <MsgFim data-test="finish-text" fim={props.fim}>
                 <Final lista={props.lista}/>
             </MsgFim>
             <p>{props.respondidos}/{props.cards.length} CONCLUÍDOS</p>
