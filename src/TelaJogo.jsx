@@ -5,7 +5,7 @@ import logo from "./assets/logo.png";
 
 export default function TelaJogo(props) {
     return (
-        <Tela>
+        <Tela inicio={props.inicio}>
             <Header>
                 <img src={logo} alt="logo" />
                 <p>ZapRecall</p>
@@ -18,7 +18,7 @@ export default function TelaJogo(props) {
 
 const Tela = styled.div`
     padding-bottom: 70px;
-    display: flex;
+    display: ${(props)=> props.inicio ? "flex": "none"};
     flex-direction: column;
     align-items: center;
     position: absolute;
