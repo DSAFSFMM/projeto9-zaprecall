@@ -11,102 +11,88 @@ export default function Card(props){
     const [resposta, setResposta] = useState(false);
     const [respondido, setRespondido] = useState(false);
     const [acerto, setAcerto] = useState(iconeCerto);
-    const [cor, setCor] = useState();
-    const [dataTest, setDataTest] = useState();
+    const [cor, setCor] = useState();   
+
     return(
-        <div data-test="flashcard">
-            <Pergunta play={play}> 
-                <p data-test="flashcard-text">Pergunta {props.index + 1}</p>
-                <img src={setaPlay} alt="setaPlay" onClick={() => setPlay(true)}/>
-            </Pergunta>
-            <Enunciado play={play} resposta={resposta}>
-                <p data-test="flashcard-text">{props.card.question}</p>
-                <img src={setaVirar} alt="setaPlay" onClick={() => setResposta(true)}/>
-            </Enunciado>
-            <Resposta resposta={resposta} respondido={respondido}>
-                <p data-test="flashcard-text">{props.card.answer}</p>
-                <div>
-                    <Botao data-test="no-btn" color="#FF3030" onClick={()=> {setRespondido(true); setAcerto(iconeErro); setCor("#FF3030"); props.setRespondidos(props.respondidos + 1); setDataTest("no-icon" )}}>Não Lembrei</Botao>
-                    <Botao data-test="partial-btn" color="#FF922E" onClick={()=> {setRespondido(true); setAcerto(iconeQuase); setCor("#FF922E"); props.setRespondidos(props.respondidos + 1); setDataTest("zap-icon" )}}>Quase não lembrei</Botao>
-                    <Botao data-test="zap-btn" color="#2FBE34" onClick={()=> {setRespondido(true); setAcerto(iconeCerto); setCor("#2FBE34"); props.setRespondidos(props.respondidos + 1); setDataTest("partial-icon" )}}>Zap!</Botao>
-                </div>
-            </Resposta>
-            <Final respondido={respondido} cor={cor}>
-                <p data-test="flashcard-text">Pergunta {props.index + 1}</p>
-                <img data-test={dataTest} src={acerto} alt="setaPlay"/>
-            </Final>
+    <Conteudo play={play} resposta={resposta} respondido={respondido} cor={cor}>
+        <Texto play={play} resposta={resposta} index={props.index + 1} question={props.card.question} answer={props.card.answer} respondido={respondido}/>
+        <Imagem play={play} setPlay={setPlay} setResposta={setResposta} respondido={respondido} acerto={acerto}/>
+        <div>
+            <Botao data-test="no-btn" color="#FF3030" onClick={()=> {setRespondido(true); setAcerto(iconeErro); setCor("#FF3030"); props.setRespondidos(props.respondidos + 1)}}>Não Lembrei</Botao>
+            <Botao data-test="partial-btn" color="#FF922E" onClick={()=> {setRespondido(true); setAcerto(iconeQuase); setCor("#FF922E"); props.setRespondidos(props.respondidos + 1)}}>Quase não lembrei</Botao>
+            <Botao data-test="zap-btn" color="#2FBE34" onClick={()=> {setRespondido(true); setAcerto(iconeCerto); setCor("#2FBE34"); props.setRespondidos(props.respondidos + 1)}}>Zap!</Botao>
         </div>
-    );
+       </Conteudo>
+    )
 }
 
-const Pergunta = styled.div`
-    background-color: white;
-    min-height: 65px;
-    width: 300px;
-    display: ${(props)=> props.play? "none" : "flex"};
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
-    border-radius: 5px;
-    padding: 0 15px 0 15px;
-    p{
-        font-family: 'Recursive';
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 19px;
-        color: #333333;
+function Imagem(props){
+    if (!props.play) {
+        return (
+            <img src={setaPlay} alt="setaPlay" onClick={() => props.setPlay(true)}/>
+        );
+    }else if(!props.respondido){
+        return (
+            <img src={setaVirar} alt="setaVirar" onClick={() => props.setResposta(true)}/>
+        );
+    }else{
+        return(
+            <img src={props.acerto} alt="setaPlay"/>
+        );
     }
-    img{
-        width: 20px;
-        height: 23px;
-    }
-`;
+}
 
-const Enunciado = styled.div`
+function Texto(props){
+    if (!props.play) {
+        return (
+            <p data-test="flashcard-text">Pergunta {props.index}</p>
+        );
+    }else if(!props.resposta){
+        return (
+            <p data-test="flashcard-text">{props.question}</p>
+        );  
+    }else if(!props.respondido){
+        return(<p data-test="flashcard-text">{props.answer}</p>);
+    }else{
+        return(<p data-test="flashcard-text">Pergunta {props.index}</p>);
+    }
+}
+
+const Conteudo = styled.div`
     position: relative;
-    background-color: #FFFFD4;
-    min-height: 130px;
+    background-color: ${(props)=> props.play && !props.respondido? "#FFFFD4" : "white"};
+    min-height: ${(props)=> props.play && !props.respondido? "135px" : "65px"};
     width: 300px;
-    display: ${(props)=> !props.play || props.resposta ? "none" : "flex"};
-    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    align-items: ${(props)=> props.play && !props.respondido? "" : "center"};
     box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
-    padding: 18px 15px 6px 15px;
+    padding: ${(props)=> props.play && !props.respondido? "18px 15px 6px 15px" : "0 15px 0 15px"};
+    flex-direction: ${(props)=> props.resposta && !props.respondido? "column" : "row"};
     p{
         font-family: 'Recursive';
-        font-weight: 400;
-        font-size: 18px;
-        line-height: 22px;
-        color: #333333;
+        font-weight: ${(props)=> props.play && !props.respondido? "400" : "700"};
+        font-size: ${(props)=> props.play && !props.respondido? "18px" : "16px"};
+        line-height: ${(props)=> props.play && !props.respondido? "22px" : "19px"};
+        color: ${(props)=> props.respondido? props.cor: "#333333"};
+        text-decoration: ${(props)=> props.respondido ? "line-through":"" };
     }
     img{
-        position: absolute;
+        display: ${(props)=> props.resposta && !props.respondido? "none" : ""};
+        width: ${(props)=> props.play? "30px" : "20px"};
+        height: ${(props)=> props.play? "#20px" : "23px"};
+        width: ${(props)=> props.respondido? "23px" : ""};
+        height: ${(props)=> props.respondido? "#23px" : ""};
+        position: ${(props)=> props.play && !props.respondido? "absolute" : ""};
         right: 15px;
         bottom: 6px;
-        width: 30px;
-        height: 20px;
     }
-`;
-
-const Resposta = styled.div`
-    position: relative;
-    background-color: #FFFFD4;
-    min-height: 130px;
-    width: 300px;
-    display: ${(props)=> !props.resposta || props.respondido? "none" : "flex"};
-    flex-direction: column;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
-    border-radius: 5px;
-    padding: 18px 15px 6px 15px;
-    p{
-        font-family: 'Recursive';
-        font-weight: 400;
-        font-size: 18px;
-        line-height: 22px;
-        color: #333333;
+    button{
+        display: ${(props)=> props.resposta && !props.respondido? "" : "none"};
     }
     div{
-        display: flex;
+        display: ${(props)=> props.resposta && !props.respondido? "flex" : "none"};
         gap: 0 8px;
     }
 `;
@@ -124,28 +110,4 @@ const Botao = styled.button`
     font-size: 12px;
     line-height: 14px;
     color: #FFFFFF;
-`;
-
-const Final = styled.div`
-    background-color: white;
-    min-height: 65px;
-    width: 300px;
-    display: ${(props)=> !props.respondido? "none" : "flex"};
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
-    border-radius: 5px;
-    padding: 0 15px 0 15px;
-    p{
-        text-decoration: line-through;
-        font-family: 'Recursive';
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 19px;
-        color: ${(props)=> props.cor};
-    }
-    img{
-        width: 23px;
-        height: 23px;
-    }
 `;
