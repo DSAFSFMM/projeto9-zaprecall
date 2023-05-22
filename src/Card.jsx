@@ -13,14 +13,37 @@ export default function Card(props){
     const [acerto, setAcerto] = useState(iconeCerto);
     const [cor, setCor] = useState();   
 
+    function responder(valor){
+        const list = [...props.lista, valor];
+        props.setLista(list);
+        setRespondido(true); 
+        props.setRespondidos(props.respondidos + 1)
+        switch (valor) {
+            case 1:
+                setAcerto(iconeCerto); 
+                setCor("#2FBE34");
+                break;
+            case 0:
+                setAcerto(iconeQuase); 
+                setCor("#FF922E"); 
+                break;
+            case -1:
+                setAcerto(iconeErro); 
+                setCor("#FF3030"); 
+                break;
+            default:
+                break;
+        }
+    }
+
     return(
     <Conteudo play={play} resposta={resposta} respondido={respondido} cor={cor}>
         <Texto play={play} resposta={resposta} index={props.index + 1} question={props.card.question} answer={props.card.answer} respondido={respondido}/>
         <Imagem play={play} setPlay={setPlay} setResposta={setResposta} respondido={respondido} acerto={acerto}/>
         <div>
-            <Botao data-test="no-btn" color="#FF3030" onClick={()=> {setRespondido(true); setAcerto(iconeErro); setCor("#FF3030"); props.setRespondidos(props.respondidos + 1)}}>Não Lembrei</Botao>
-            <Botao data-test="partial-btn" color="#FF922E" onClick={()=> {setRespondido(true); setAcerto(iconeQuase); setCor("#FF922E"); props.setRespondidos(props.respondidos + 1)}}>Quase não lembrei</Botao>
-            <Botao data-test="zap-btn" color="#2FBE34" onClick={()=> {setRespondido(true); setAcerto(iconeCerto); setCor("#2FBE34"); props.setRespondidos(props.respondidos + 1)}}>Zap!</Botao>
+            <Botao data-test="no-btn" color="#FF3030" onClick={()=> responder(-1)}>Não Lembrei</Botao>
+            <Botao data-test="partial-btn" color="#FF922E" onClick={()=> responder(0)}>Quase não lembrei</Botao>
+            <Botao data-test="zap-btn" color="#2FBE34" onClick={()=> responder(1)}>Zap!</Botao>
         </div>
        </Conteudo>
     )

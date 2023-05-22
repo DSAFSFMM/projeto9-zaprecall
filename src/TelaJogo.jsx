@@ -2,16 +2,18 @@ import styled from "styled-components";
 import CaixaCards from "./CaixaCards";
 import RodaPe from "./RodaPe";
 import logo from "./assets/logo.png";
+import { useState } from "react";
 
 export default function TelaJogo(props) {
+    const [lista, setLista] = useState([]);
     return (
         <Tela inicio={props.inicio}>
             <Header>
                 <img src={logo} alt="logo" />
                 <p>ZapRecall</p>
             </Header>
-            <CaixaCards setRespondidos={props.setRespondidos} respondidos={props.respondidos} cards={props.cards}/>
-            <RodaPe cards={props.cards} respondidos={props.respondidos}/>
+            <CaixaCards setRespondidos={props.setRespondidos} respondidos={props.respondidos} cards={props.cards} lista={lista} setLista={setLista}/>
+            <RodaPe lista={lista} cards={props.cards} respondidos={props.respondidos}/>
         </Tela>
     );
 }
