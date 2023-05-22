@@ -3,9 +3,10 @@ import Card from "./Card";
 
 export default function CaixaCards(props){
     const cards = props.cards;
+    const tamanho = cards.length;
     return(
         <ConteinerCards>
-            {cards.map((card,index)=><Card key={index} card={card} index={index} setRespondidos={props.setRespondidos} respondidos={props.respondidos} lista={props.lista} setLista={props.setLista}/>)}
+            {cards.map((card,index)=><Card key={index} card={card} index={index} setRespondidos={props.setRespondidos} respondidos={props.respondidos} lista={props.lista} setLista={props.setLista} tamanho={tamanho} setFim={props.setFim}/>)}
         </ConteinerCards>
     );
 }

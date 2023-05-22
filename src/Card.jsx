@@ -34,6 +34,9 @@ export default function Card(props){
             default:
                 break;
         }
+        if (props.respondidos + 1 === props.tamanho) {
+            props.setFim(true);
+        }
     }
 
     return(
